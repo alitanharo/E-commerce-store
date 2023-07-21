@@ -14,7 +14,7 @@ export default function Layout({ title, children }) {
             </Head>
             <div className='flex min-h-screen flex-col justify-between'>
                 <header>
-                    <nav className='bg-slate-200 flex h-12 flex-row justify-between shadow-md items-center px-4'>
+                    <nav className='bg-amber-400 flex h-12 flex-row justify-between shadow-md items-center px-4'>
                         <Link className='text-lg font-bold' href="/">
                             T-Shop
                         </Link>
