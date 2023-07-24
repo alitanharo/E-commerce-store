@@ -10,7 +10,7 @@ const data = {
             raiting: "4",
             numRewiues: "12",
             description: " This is the best shoes wax in the word!",
-            countInStock: "44",
+            countInStock: "4",
 
         },
         {

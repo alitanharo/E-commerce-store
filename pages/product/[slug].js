@@ -8,6 +8,7 @@ import { Store } from '../../utils/Store';
 
 
 export default function ProductScreen() {
+    const router = useRouter()
     const { state, dispatch } = useContext(Store)
     const { query } = useRouter();
     const { slug } = query;
@@ -15,7 +16,11 @@ export default function ProductScreen() {
     if (!product) return <div>"Product Not Found!"</div>
 
     const addTocardHandler = () => {
-        dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } })
+        const existItem = state.cart.cartItems.find(item => item.slug === slug)
+        const quantity = existItem ? existItem.quantity + 1 : 1;
+        if (product.countInStock < quantity) return alert('Sorry the product is out of stock!')
+        dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
+        router.push('/cart')
     }
 
 
@@ -48,12 +53,12 @@ export default function ProductScreen() {
                         <li>Description:{product.description}</li>
                     </ul>
                 </div>
-                <div className='p-5 mb-6 card'>
+                <div className=' card p-5 mb-6'>
                     <div className='mb-2 flex justify-between'>
                         <div>Price:</div>
                         <div>${product.price}</div>
                     </div>
-                    <div className='p-5'>
+                    <div className=' p-5'>
                         <div className='mb-2 flex justify-between'>
                             <div>Status:</div>
                             <div>{product.countInStock > 0 ? 'Availble' : 'Unavailble'}</div>
@@ -62,7 +67,7 @@ export default function ProductScreen() {
 
 
                     </div>
-                    <butto className='primary-button w-full bg-amber-200' onClick={addTocardHandler} >Add to card</butto>
+                    <button className='primary-button w-full bg-amber-200' onClick={addTocardHandler} >Add to card</button>
                 </div>
 
             </div>

@@ -15,7 +15,11 @@ function reducer(state, action) {
             )
             const cartItems = existItem ? state.cart.cartItems.map(
                 item => item.name === existItem.name ? newItem : item
-            ) : [...state.cart.cartItems, newItem] 
+            ) : [...state.cart.cartItems, newItem]
+            return { ...state, cart: { ...state.cart, cartItems } }
+        }
+        case 'CART_REMOVE_ITEM': {
+            const cartItems = state.cart.cartItems.filter(item => item.slug !== action.payload.slug);
             return { ...state, cart: { ...state.cart, cartItems } }
         }
         default:
@@ -29,5 +33,5 @@ export function StoreProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, initialState)
     const value = { state, dispatch }
 
-    return <Store.Provider value={value}>{children}</Store.Provider> 
+    return <Store.Provider value={value}>{children}</Store.Provider>
 }
