@@ -5,15 +5,25 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { XCircleIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-
-export default function CartScreen() {
-    const router = useRouter()
-    const { state, dispatch } = useContext(Store)
-    const { cart: { cartItems } } = state;
+ function CartScreen() {
+    const router = useRouter();
+    const { state, dispatch } = useContext(Store);
+    const {
+        cart: { cartItems },
+    } = state;
     const removeItemHandler = (item) => {
-        dispatch({ type: 'CART_REMOVE_ITEM', payload: item })
-    }
+        dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+    };
+    const updateCartHandler = async (item, qty) => {
+        const quantity = Number(qty);
+
+
+        dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+
+    };
+
     return (
         <Layout title='Shoping Cart'>
             <h1 className='mb-4 text-xl'>Shoping Cart</h1>
@@ -51,7 +61,21 @@ export default function CartScreen() {
                                                     </a>
                                                 </Link>
                                             </td>
-                                            <td className='p-5 text-right'>{item.quantity}</td>
+                                            <td className='p-5 text-right'>
+                                                <select
+                                                    value={item.quantity.toString()}
+                                                    onChange={(e) => updateCartHandler(item, parseInt(e.target.value))}
+                                                >
+                                                    <option value="">Select Quantity</option>
+                                                    {Array.from({ length: item.countInStock }, (_, index) => (
+                                                        <option key={index + 1} value={index + 1}>
+                                                            {index + 1}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
+
+                                            </td>
                                             <td className='p-5 text-right'>${item.price}</td>
                                             <td className='p-5 text-center'>
                                                 <button onClick={() => removeItemHandler(item)}>
@@ -89,3 +113,5 @@ export default function CartScreen() {
         </Layout>
     )
 }
+
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });
