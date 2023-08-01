@@ -100,7 +100,7 @@ import dynamic from 'next/dynamic';
 
                             </li>
                             <li>
-                                <button onClick={() => router.push('/shipping')} className='primary-button w-full bg-amber-200'>
+                                <button onClick={() => router.push('login?redirect=/shipping')} className='primary-button w-full bg-amber-200'>
                                     Check out
                                 </button>
                             </li>
